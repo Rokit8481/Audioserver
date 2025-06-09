@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Музичний сервіс</title>
+  <link rel="stylesheet" href="/static/css-js/style.css">
+</head>
+<body>
+  <div class="topbar">
+    {% if current_user %}
+      <div>
+        <img src="{{ current_user.avatar }}" class="fixed-image-new"> {{ current_user.login }}
+        <a href="/edit_user" class="edit-button">Редагувати</a>
+        <form method="post" action="/delete_user/{{ current_user.id }}" style="display:inline;">
+          <button class="edit-button" onclick="return confirm('Видалити акаунт?')">Видалити</button>
+        </form>
+      </div>
+      <div class="auth-buttons">
+        <a href="/logout"><button>Вийти</button></a>
+      </div>
+    {% else %}
+      <div class="auth-buttons">
+        <a href="/register"><button>Зареєструватися</button></a>
+        <a href="/login"><button>Увійти</button></a>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="layout">
+    <div class="sidebar">
+      <a href="/add_playlist" class="action-button">Додати Плейлист</a>
+      {% for playlist in playlists %}
+        <div class="playlist-entry" style="flex-direction: column; align-items: start;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <a href="/playlist/{{ playlist.id }}" class="playlist-icon">
+              <img src="{{ playlist.avatar }}" alt="Плейліст">
+            </a>
+            <a href="/playlist/{{ playlist.id }}" class="playlist-title">{{ playlist.title }}</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="main">
+
+      <form method="get" action="/" style="margin-bottom: 2rem;">
+        <label for="scope">Показати:</label>
+        <select name="scope" id="scope" onchange="this.form.submit()">
+          <option value="all" {% if not current_user or request.query_params.get('scope') == 'all' %}selected{% endif %}>Усі</option>
+          {% if current_user %}
+            <option value="my" {% if request.query_params.get('scope') == 'my' %}selected{% endif %}>Мої</option>
+          {% endif %}
+        </select>
+      </form>
+
+      <h2>Автори</h2>
+      {% if current_user %}
+        <div class="vertical-buttons">
+          <a href="/add_author"><button class="action-button">Додати Автора</button></a>
+        </div>
+      {% endif %}
+      {% for author in authors %}
+        <div class="card author">
+          <img src="{{ author.avatar }}" class="fixed-image">
+          <strong>{{ author.name }}</strong> (ID: {{ author.id }})
+          {% if current_user %}
+            <div>
+              <a href="/edit_author/{{ author.id }}"><button class="edit-button">Редагувати</button></a>
+              <form method="post" action="/delete_author/{{ author.id }}" style="display:inline;">
+                <button class="edit-button" onclick="return confirm('Видалити автора?')">Видалити</button>
+              </form>
+            </div>
+          {% endif %}
+          <div style="margin-left: 2rem;">
+            <em>Пісні:</em>
+            <ul>
+              {% for track in tracks if track.author.id == author.id %}
+                <li>{{ track.title }} (ID: {{ track.id }})</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endfor %}
+
+      <h2>Пісні</h2>
+      {% if current_user %}
+        <div class="vertical-buttons">
+          <a href="/add_track"><button class="action-button">Додати Пісню</button></a>
+        </div>
+      {% endif %}
+      {% for track in tracks %}
+        <div class="card track">
+          <img src="{{ track.avatar }}" class="fixed-image-new">
+          <strong>{{ track.title }}</strong> (ID: {{ track.id }})
+          {% if current_user and track.user_id == current_user.id %}
+            <div>
+              <a href="/edit_track/{{ track.id }}"><button class="edit-button">Редагувати</button></a>
+              <form method="post" action="/delete_track/{{ track.id }}" style="display:inline;">
+                <button class="edit-button" onclick="return confirm('Видалити трек?')">Видалити</button>
+              </form>
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>

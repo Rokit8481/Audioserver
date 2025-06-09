@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Редагувати трек</title>
+  <link rel="stylesheet" href="/static/css-js/style.css">
+</head>
+<body>
+  <div class="topbar">
+    <a href="/" class="edit-button">← Назад</a>
+  </div>
+
+  <div class="main">
+    <div class="card form-container">
+      <h2>Редагувати трек</h2>
+      <form method="post" enctype="multipart/form-data">
+        <label>Назва:</label>
+        <input type="text" name="title" value="{{ track.title }}" required>
+  
+        <label>Новий трек (необов’язково):</label>
+        <input type="file" name="file" accept="audio/*">
+  
+        <label>Аватар (необов’язково):</label>
+        <input type="file" name="avatar_file" accept="image/*">
+  
+        <label>Автор:</label>
+        <select name="author_id" required>
+          {% for author in authors %}
+            <option value="{{ author.id }}" {% if track.author.id == author.id %}selected{% endif %}>
+              {{ author.name }}
+            </option>
+          {% endfor %}
+        </select>
+  
+        <button type="submit" class="action-button">Зберегти</button>
+      </form>
+    </div>
+  </div>  
+</body>
+</html>

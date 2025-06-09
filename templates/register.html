@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Реєстрація</title>
+  <link rel="stylesheet" href="/static/css-js/style.css">
+</head>
+<body>
+  <div class="topbar">
+    <a href="/" class="edit-button">← Назад</a>
+  </div>
+  <div class="main">
+    <div class="card">
+      <h2>Реєстрація</h2>
+      <form method="post" action="/register" enctype="multipart/form-data">
+        <label>Логін:</label>
+        <input type="text" name="login" required class="input-text">
+
+        <label>Аватар:</label>
+        <input type="file" name="avatar_file" accept="image/*"required class="action-button" style="width: 100%; margin-bottom: 1rem;">
+
+        <label>Пароль:</label>
+        <input type="password" name="password" required class="input-text">
+
+        <button type="submit" class="action-button">Зареєструватися</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

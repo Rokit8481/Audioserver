@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ playlist.title }}</title>
+  <link rel="stylesheet" href="/static/css-js/style.css">
+  <script src="https://unpkg.com/wavesurfer.js"></script>
+</head>
+<body>
+
+  <div class="topbar">
+    <a href="/" class="edit-button">← Назад</a>
+    {% if current_user %}
+      <div>
+        <img src="{{ current_user.avatar }}" class="fixed-image"> {{ current_user.login }}
+        <a href="/edit_user" class="edit-button">Редагувати</a>
+        <form method="post" action="/delete_user/{{ current_user.id }}" style="display:inline;">
+          <button class="edit-button" onclick="return confirm('Видалити акаунт?')">Видалити</button>
+        </form>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="main">
+    <div style="display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem;">
+      <img src="{{ playlist.avatar }}" style="width: 120px; height: 120px; border-radius: 12px; object-fit: cover;">
+      
+      <div style="flex-grow: 1;">
+        <h1 style="margin: 0;">{{ playlist.title }}</h1>
+        {% if current_user and current_user.id == playlist.user_id %}
+          <div style="margin-top: 1rem;">
+            <a href="/edit_playlist/{{ playlist.id }}"><button class="edit-button important">Редагувати</button></a>
+            <form method="post" action="/delete_playlist/{{ playlist.id }}" style="display:inline;">
+              <button class="edit-button" onclick="return confirm('Видалити плейліст?')">Видалити</button>
+            </form>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div>
+      {% for track in tracks %}
+        <div class="card track" data-track-id="{{ loop.index0 }}" data-url="{{ track.file_url }}" data-title="{{ track.title }}" style="display: flex; align-items: center; gap: 1rem;">
+          <img src="{{ track.avatar }}" style="width: 60px; height: 60px; border-radius: 6px; object-fit: cover;">
+
+          <div style="flex-grow: 1;">
+            <div style="font-size: 1.2rem; font-weight: bold; color: white;">{{ track.title }}</div>
+            <div class="track-author" style="font-size: 0.9rem; color: #aaa;">{{ track.author.name }}</div>
+          </div>
+
+          <button class="play-button track-play-btn" data-index="{{ loop.index0 }}">
+            <img src="/static/icons/play.png" alt="play">
+          </button>
+          
+
+          {% if current_user and current_user.id == playlist.user_id %}
+            <button class="edit-button remove-track-btn"
+                    data-playlist-id="{{ playlist.id }}"
+                    data-track-id="{{ track.id }}"
+                    onclick="return confirm('Видалити трек з плейліста?')">
+              Видалити
+            </button>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if current_user and current_user.id == playlist.user_id %}
+      <div class="card" style="margin-top: 2rem;">
+        <form id="addTrackForm" data-playlist-id="{{ playlist.id }}">
+          <label for="track_id">Додати трек:</label>
+          <select name="track_id" id="track_id">
+            {% for track in all_tracks %}
+              {% if track not in tracks %}
+                <option value="{{ track.id }}">{{ track.title }} ({{ track.author.name }})</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+          <button type="submit" class="action-button" style="margin-top: 1rem;">Додати</button>
+        </form>
+        <div id="trackAddStatus" style="color: #1db954; margin-top: 1rem;"></div> 
+      </div>
+    {% endif %}
+
+    <div id="global-player" style="display: flex;">
+      <img id="player-cover" src="" style="width: 60px; height: 60px; border-radius: 6px; object-fit: cover;">
+      <div class="track-info">
+        <div id="global-track-title" class="track-title"></div>
+        <div id="global-track-author" class="track-author"></div>
+      </div>
+      <div class="player-controls">
+        <button class="icon-btn" onclick="previousTrack()">
+          <img src="/static/icons/prev.png" alt="prev">
+        </button>
+        <button class="icon-btn" onclick="toggleGlobalPlay()" id="global-play">
+          <img src="/static/icons/play.png" alt="play">
+        </button>
+        <button class="icon-btn" onclick="nextTrack()">
+          <img src="/static/icons/next.png" alt="next">
+        </button>
+      </div>
+      <div id="waveform-global" class="waveform-hidden" style="flex: 1; height: 64px;"></div>
+      <input type="range" id="volume" min="0" max="1" step="0.01" onchange="setVolume(this.value)" style="max-width: 120px;">
+    </div>    
+  </div>
+
+  <script src="/static/css-js/playlist-player.js"></script>
+</body>
+</html>

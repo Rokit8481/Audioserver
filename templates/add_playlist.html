@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Додати плейліст</title>
+  <link rel="stylesheet" href="/static/css-js/style.css">
+</head>
+<body>
+  <div class="topbar">
+    <a href="/" class="edit-button">← Назад</a>
+  </div>
+  <div class="main">
+    <div class="card">
+      <h2>Додати плейліст</h2>
+      <form method="post" enctype="multipart/form-data">
+        <label>Назва плейліста:</label>
+        <input type="text" name="title" required class="action-button" style="width: 100%; margin-bottom: 1rem;">
+
+        <label>Обкладинка:</label>
+        <input type="file" name="avatar_file" accept="image/*" class="action-button" style="width: 100%; margin-bottom: 1rem;">
+
+        <button type="submit" class="action-button">Створити</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

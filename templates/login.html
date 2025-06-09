@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Вхід</title>
+  <link rel="stylesheet" href="/static/css-js/style.css">
+</head>
+<body>
+  <div class="topbar">
+    <a href="/" class="edit-button">← Назад</a>
+  </div>
+  <div class="main">
+    <div class="card">
+      <h2>Вхід</h2>
+      <form method="post" action="/login">
+        <label>Логін:</label>
+        <input type="text" name="login" required class="input-text">
+
+        <label>Пароль:</label>
+        <input type="password" name="password" required class="input-text">
+
+        <button type="submit" class="action-button">Увійти</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

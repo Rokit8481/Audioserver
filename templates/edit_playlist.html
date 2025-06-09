@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Редагувати плейліст</title>
+  <link rel="stylesheet" href="/static/css-js/style.css">
+</head>
+<body>
+<div class="topbar">
+  <a href="/" class="edit-button">← Назад</a>
+</div>
+
+<div class="main">
+  <div class="card form-container">
+    <h2>Редагувати плейліст</h2>
+    <form method="post" enctype="multipart/form-data">
+      <label>Назва:</label>
+      <input type="text" name="title" value="{{ playlist.title }}" required>
+
+      <label>Обкладинка (необов’язково):</label>
+      <input type="file" name="avatar_file" accept="image/*">
+
+      <button type="submit" class="action-button">Зберегти</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Додати трек</title>
+  <link rel="stylesheet" href="/static/css-js/style.css">
+</head>
+<body>
+  <div class="topbar">
+    <a href="/" class="edit-button">← Назад</a>
+  </div>
+  <div class="main">
+    <div class="card">
+      <h2>Додати трек</h2>
+      <form method="post" enctype="multipart/form-data">
+        <label>Назва:</label>
+        <input type="text" name="title" required class="action-button" style="width: 100%; margin-bottom: 1rem;">
+
+        <label>Файл треку:</label>
+        <input type="file" name="file" accept="audio/*" required class="action-button" style="width: 100%; margin-bottom: 1rem;">
+
+        <label>Аватар:</label>
+        <input type="file" name="avatar_file" accept="image/*" class="action-button" style="width: 100%; margin-bottom: 1rem;">
+
+        <label>Автор:</label>
+        <select name="author_id" required class="input-select">
+          {% for author in authors %}
+            <option value="{{ author.id }}">{{ author.name }}</option>
+          {% endfor %}
+        </select>
+
+        <button type="submit" class="action-button">Додати</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
